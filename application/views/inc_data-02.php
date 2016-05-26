@@ -44,6 +44,28 @@
                         </tr>
                     </table>
                     <?php } ?>
+                    <?php if(!empty($filter)) { ?>
+                    <table>
+                        <tr>
+                        <td>
+                            <label for="filter">Valid : &nbsp </label>
+                        </td>
+                        <td>
+                            <form action="getall" method="post" class="form">
+                                <select class="form-control" onchange="this.form.submit()" name="valid">
+                                <?php
+                                    foreach ($filter as $key => $value) {
+                                    $selected = ($key == $valid) ? "selected" : "";
+                                ?>
+                                    <option value="<?= $key ?>" <?= $selected ?> > <?= $value ?></option>
+                                <?php } ?>
+                                </select>
+                            </form>
+                        </td>
+                        </tr>
+                    </table>
+                    <br>
+                    <?php } ?>
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <tr>
@@ -113,6 +135,11 @@
                                                         <span class="fa fa-trash-o"></span> Hapus
                                                     </button>
                                                     <?php } ?>
+                                                    <a href="http://maps.google.com?q=<?=$key['lattitude']?>,<?=$key['longitude']?>" target="_blank">
+                                                    <div class="btn btn-success btn-xs">
+                                                        <span class="fa fa-map-marker"></span> Loc.
+                                                    </div>
+                                                    </a>
                                                 </form>
                                             </td>
                                             <?php } ?>

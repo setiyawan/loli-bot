@@ -42,12 +42,18 @@ class C_controller extends CI_Controller
 
     public function getall($data='')
     {
+        $a_filter = array();
         $reqpage = 0;
         $page = $this->input->post('page');
+        $valid = $this->input->post('valid');
+
+        if($valid == null) $valid = -1;
+        if($valid != -1) $a_filter['isvalid'] = $valid;
+        
         if(!empty($page)) $reqpage = $page * 1000;
         $this->is_logged();
         $this->load->model(model);
-        $a_data = $this->{model}->getall($reqpage);
+        $a_data = $this->{model}->getall($reqpage, $a_filter);
         $a_data['datacount'] = ceil($this->{model}->datacount()/1000);
         
         if(!empty($data)) {
@@ -58,8 +64,9 @@ class C_controller extends CI_Controller
             $a_data['message'] = "";
         
         $a_data['page'] = $reqpage/1000;
+        $a_data['valid'] = $valid;
         $this->input($a_data);
-        json_encode($a_data);
+        //json_encode($a_data);
     }
 
     public function delete()

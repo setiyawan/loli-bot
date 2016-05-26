@@ -14,6 +14,8 @@ class Survey extends C_controller
 
     public function data($data)
     {
+        if(!empty($this->input->post('page'))) $start = $this->input->post('page');
+        else $start = 0;
         $this->load->model('m_combo');
         $status = $this->m_combo->status();
         $jeniskelamin = $this->m_combo->jeniskelamin();
@@ -33,7 +35,7 @@ class Survey extends C_controller
         $kabupaten = $this->m_combo->kabupaten();
         $kecamatan = $this->m_combo->kecamatan();
         $desa = $this->m_combo->desa(true);
-        $keluarga = $this->m_combo->keluarga(true);
+        $keluarga = $this->m_combo->keluarga($start);
         $validator = $this->m_combo->validator();
 
         $a_data['input'][] = array('key' => 'idsurvey', 'label' => 'Id Survey', 'type' => 'T', 'hidden' => true, 'readonly' => true);
@@ -45,6 +47,9 @@ class Survey extends C_controller
         $a_data['input'][] = array('key' => 'idkeluarga', 'label' => 'Nama Keluarga', 'type' => 'S', 'option' => $keluarga, 'hidden' => false, 'readonly' => true);
 
         $a_data['input'][] = array('key' => 'hasil', 'label' => 'Tingkat Kemiskinan', 'type' => 'T', 'hidden' => false, 'readonly' => true);
+        $a_data['input'][] = array('key' => 'lattitude', 'label' => 'Lattitude', 'type' => 'T', 'hidden' => true, 'readonly' => true);
+        $a_data['input'][] = array('key' => 'longitude', 'label' => 'Longitude', 'type' => 'T', 'hidden' => true, 'readonly' => true);
+
         $a_data['input'][] = array('key' => 'jeniskelamin', 'label' => 'Jenis Kelamin', 'type' => 'S', 'option' => $jeniskelamin, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'umur', 'label' => 'Umur', 'type' => 'T', 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'pendidikan', 'label' => 'Pendidikan', 'type' => 'S', 'option' => $pendidikan, 'hidden' => true, 'readonly' => true);
@@ -64,7 +69,7 @@ class Survey extends C_controller
         $a_data['input'][] = array('key' => 'idvalidator', 'label' => 'Validator', 'type' => 'S', 'option' => $validator, 'hidden' => false, 'readonly' => true);
         $a_data['input'][] = array('key' => 'tglvalidasi', 'label' => 'Tgl Validasi', 'type' => 'D', 'hidden' => false, 'readonly' => true);
 
-        $a_data['tab'][] = array('key' => 'identitas', 'label' => 'Identitas', 'row' => 7);
+        $a_data['tab'][] = array('key' => 'identitas', 'label' => 'Identitas', 'row' => 9);
         $a_data['tab'][] = array('key' => 'sdm', 'label' => 'SDM', 'row' => 5);
         $a_data['tab'][] = array('key' => 'infrastruktur', 'label' => 'Infrastruktur', 'row' => 9);
         $a_data['tab'][] = array('key' => 'validasi', 'label' => 'Validasi', 'row' => 4);
@@ -73,6 +78,8 @@ class Survey extends C_controller
         $a_data['label'] = 'Hasil Survey';
         $a_data['p_key'] = 'idsurvey';
         $a_data['sync'] = false;
+        $a_data['direction'] = true;
+        $a_data['filter'] = $this->m_combo->status(true);
 
         //variabel request
         $this->load->model('m_auth');

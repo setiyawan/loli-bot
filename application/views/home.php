@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="keluarga/getall">
+                        <a href="keluarga/getall" target="blank">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                       <a href="survey/getall" target="blank">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="survey/getall" target="blank">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -114,7 +114,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="survey/getall" target="blank">
                             <div class="panel-footer">
                                 <span class="pull-left">View Details</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

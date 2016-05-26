@@ -19,7 +19,7 @@ class M_dashboard extends M_model
     	$this->db->where('isvalid', '1');
 		$this->db->from(table2);
 		$data['valid'] = $this->db->count_all_results();
-		$this->db->where('isvalid', '');
+		$this->db->where('isvalid', '0');
 		$this->db->from(table2);
 		$data['invalid'] = $this->db->count_all_results();
     	return $data;
@@ -32,7 +32,7 @@ class M_dashboard extends M_model
     	$this->db->where('isvalid', '1');
 		$this->db->from(table2);
 		$data['b'] = $this->db->count_all_results();
-		$this->db->where('isvalid', '');
+		$this->db->where('isvalid', '0');
 		$this->db->from(table2);
 		$data['c'] = $this->db->count_all_results();
     	return $data;
@@ -66,18 +66,19 @@ class M_dashboard extends M_model
 
     public function tabelkecamatan()
     {
-    	$sql = $this->db->query("select namakecamatan, count(idkeluarga) as target, coalesce(masuk, 0) as masuk 
+    	$sql = $this->db->query("select kc.namakecamatan, count(idkeluarga) as target, coalesce(masuk, 0) as masuk 
     		from ta.ms_keluarga k 
 			join ta.ms_desa d on d.iddesa = k.iddesa
 			left join (
-				select c.idkecamatan, namakecamatan, count(s.idkeluarga) as masuk from " . table2 . " s 
+				select c.idkecamatan, namakecamatan, count(s.idkeluarga) as masuk from " . table2 . "  s 
 				join ta.ms_keluarga k on s.idkeluarga = k.idkeluarga
 				join ta.ms_desa d on d.iddesa = k.iddesa
 				join ta.ms_kecamatan c on c.idkecamatan = d.idkecamatan
 				group by namakecamatan, c.idkecamatan
 				order by c.idkecamatan
 			) a on a.idkecamatan = d.idkecamatan
-			group by d.idkecamatan, namakecamatan, masuk
+			join ta.ms_kecamatan kc on kc.idkecamatan = d.idkecamatan
+			group by d.idkecamatan, kc.namakecamatan, masuk
 			order by d.idkecamatan"); 
     	return $sql->result_array();
     }

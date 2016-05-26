@@ -53,6 +53,9 @@
                     <li>
                         <a href="<?= base_url() ?>index.php/survey/getall">Hasil Survey</a>
                     </li>
+                    <li>
+                        <a href="<?= base_url() ?>index.php/datakesejahteraan/getlist">Tingkat Kesejahteraan</a>
+                    </li>
                 </ul>
             </li>
 

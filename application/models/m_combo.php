@@ -31,8 +31,11 @@ class M_combo extends CI_Model
         return $data;
     }
 
-    function status() {
-    	$data = array('1' => 'Valid', '' => 'Tidak Valid');
+    function status($empty = false) {
+        if($empty) 
+            $data = array('-1' => 'Pilih Semua', '1' => 'Valid', '0' => 'Tidak Valid');
+        else
+    	   $data = array('1' => 'Valid', '0' => 'Tidak Valid');
     	return $data;
     }
 
@@ -154,6 +157,7 @@ class M_combo extends CI_Model
     }
 
     function kecamatan() {
+        // $this->db->order_by('namakecamatan', 'asc');
         $query = $this->db->get('ta.ms_kecamatan')->result_array();
         foreach ($query as $key) {
             $data[$key['idkecamatan']] = $key['namakecamatan'];
@@ -170,10 +174,20 @@ class M_combo extends CI_Model
         return $data;
     }
 
-    function keluarga($val = false) {
-        $query = $this->db->get('ta.v_survey')->result_array();
+    function keluarga($start = 0) {
+        $this->db->order_by('idkeluarga', 'asc');
+        $query = $this->db->get('ta.v_survey3', 1000, $start*1000)->result_array();
         foreach ($query as $key) {
             $data[$key['idkeluarga']] = $key['nama'];
+        }
+        return $data;
+    }
+
+    function kesejahteraan() {
+        $this->db->order_by('idkesejahteraan', 'asc');
+        $query = $this->db->get('ta.ms_kesejahteraan')->result_array();
+        foreach ($query as $key) {
+            $data[$key['idkesejahteraan']] = $key['nama'];
         }
         return $data;
     }
