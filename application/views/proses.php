@@ -1,4 +1,4 @@
-<body  onload="blink()">
+<body>
 
     <div id="wrapper">
 
@@ -37,16 +37,13 @@
             <div> 
                 
                 <div class="card wizard-card ct-wizard-green" id="wizardProfile">
-                    <form action="" method="">
+                    <form action="finish" method="post">
                 <!--        You can switch "ct-wizard-orange"  with one of the next bright colors: "ct-wizard-blue", "ct-wizard-green", "ct-wizard-orange", "ct-wizard-red"             -->
             
                         <div class="wizard-header">
                             <h3>
-                               <b> Pemberitahuan! 
-                                    <font color="red" size="+5" id="aF"> <blink> <?=count($data) ?> </blink> 
-                                    </font> 
-                                </b> Data Baru <br>
-                               <small>Silakan Lakukan Validasi Data dari Awal sampai Terakhir</small>
+                               <b> Aliran Data Survey</b><br>
+                               <small>Proses Validasi Data dari Awal sampai Terakhir</small>
                             </h3>
                         </div>
                         <ul>
@@ -126,82 +123,159 @@
                               </div>
                             </div>
                             <div class="tab-pane" id="ahp">
-                                <h4 class="info-text"> What are you doing? (checkboxes) </h4>
+                                <h4 class="info-text">Proses Perhitungan AHP</h4>
                                 <div class="row">
-                                   
-                                    
-                                    <div class="col-sm-10 col-sm-offset-1">
-                                        <div class="col-sm-4">
-                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                <input type="checkbox" name="jobb" value="Design">
-                                                <div class="icon">
-                                                    <i class="fa fa-pencil"></i>
-                                                </div>
-                                                <h6>Design</h6>
-                                            </div>
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body">
+                                        <div class="table-responsive ">
+                                            <table class="table table-striped table-bordered table-hover" width="100%">
+                                                <thead>
+                                                   <tr>
+                                                        <th align="center">No.</th>
+                                                        <th align="center">Variabel</th>
+                                                        <th align="center">Bobot</th>
+                                                        <th align="center">Hasil Survey</th>
+                                                        <th align="center">Iterasi 1</th>
+                                                        <th align="center">Iterasi 2</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php 
+                                                        $hasilAHP = 0; 
+                                                        foreach ($pekerjaan as $key => $val) { 
+                                                        if($key == count($pekerjaan)) {
+                                                                $hasilAHP = $val[4];
+                                                                $tingkatKesejahteraan = $val[5];
+                                                                continue;
+                                                            }
+                                                    ?>
+                                                        <tr>
+                                                            <td align="center"><?=$key ?></td>
+                                                            <?php foreach ($val as $keys => $value) { 
+                                                                if($keys > 2 && ($key == 1 || $key == 7)) $align = "right";
+                                                                else if($keys > 0) $align = "center";
+                                                                else
+                                                                    $align = "";
+                                                            ?>
+                                                                <td align="<?=$align ?>"> 
+                                                                    <?php 
+                                                                        if($keys == 0 && $key != 1 && $key != 7) echo "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp";
+                                                                        echo $value;
+                                                                    ?>
+                                                                </td>
+                                                            <?php } ?>
+                                                        </tr>
+                                                    <?php } ?>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td colspan="4" align="center"> <b> Hasil Akhir AHP</b></td>
+                                                        <td align="center"> <b> <?=$hasilAHP ?> </b> </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                <input type="checkbox" name="jobb" value="Code">
-                                                <div class="icon">
-                                                    <i class="fa fa-terminal"></i>
-                                                </div>
-                                                <h6>Code</h6>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                <input type="checkbox" name="jobb" value="Develop">
-                                                <div class="icon">
-                                                    <i class="fa fa-laptop"></i>
-                                                </div>
-                                                <h6>Develop</h6>
-                                            </div>
-                                            
-                                        </div>
+                                        <!-- /.table-responsive -->
                                     </div>
-                                    
+                                    <!-- /.panel-body -->
                                 </div>
                             </div>
                             <div class="tab-pane" id="clsutering">
+                                <h4 class="info-text">Hasil AHP : <b> <?=$hasilAHP ?> </b></h4>
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <h4 class="info-text"> Are you living in a nice area? </h4>
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body">
+                                        <div class="table-responsive ">
+                                            <div align="center"> <b> <font size="+1"> Tabel Tingkat Kesejahteraan </font> </b> </div>
+                                            <table class="table table-striped table-bordered table-hover" width="100%">
+                                                <thead>
+                                                   <tr>
+                                                        <th align="center">No.</th>
+                                                        <th align="center">Tingkat Kesejahteraan</th>
+                                                        <th align="center">Batas Bawah</th>
+                                                        <th align="center">Batas Atas</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php 
+                                                        foreach ($kesejahteraan as $key => $val) { 
+                                                    ?>
+                                                        <tr>
+                                                            <td align="center"><?=$key ?></td>
+                                                            <?php foreach ($val as $keys => $value) { ?>
+                                                                <td align="center"> 
+                                                                    <?php 
+                                                                        echo $value;
+                                                                    ?>
+                                                                </td>
+                                                            <?php } ?>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                            <i> <small> *) Tabel ini didapatkan dengan menggunakan metode KMEANS </small>  </i>
+                                        </div>
+                                        <!-- /.table-responsive -->
                                     </div>
-                                    <div class="col-sm-7 col-sm-offset-1">
-                                         <div class="form-group">
-                                            <labe>Street Name</label>
-                                            <input type="text" class="form-control" placeholder="5h Avenue">
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                         <div class="form-group">
-                                            <label>Street Number</label>
-                                            <input type="text" class="form-control" placeholder="242">
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-5 col-sm-offset-1">
-                                         <div class="form-group">
-                                            <label>City</label>
-                                            <input type="text" class="form-control" placeholder="New York...">
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                         <div class="form-group">
-                                            <label>Country</label><br>
-                                             <select name="country" class="form-control">
-                                                <option value="Afghanistan"> Afghanistan </option>
-                                                <option value="Albania"> Albania </option>
-                                                <option value="Algeria"> Algeria </option>
-                                                <option value="American Samoa"> American Samoa </option>
-                                                <option value="Andorra"> Andorra </option>
-                                                <option value="Angola"> Angola </option>
-                                                <option value="Anguilla"> Anguilla </option>
-                                                <option value="Antarctica"> Antarctica </option>
-                                                <option value="...">...</option>
-                                            </select>
-                                          </div>
+                                    <!-- /.panel-body -->
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="hasil">
+                                <h4 class="info-text"><b> Kesimpulan!</b></h4>
+                                <div class="row">
+                                    <!-- /.panel-heading -->
+                                    <div class="panel-body">
+                                        <div class="table-responsive ">
+                                            <!-- <div align="center"> <b> <font size="+1"> Tabel Tingkat Kesejahteraan </font> </b> </div> -->
+                                            <table class="table table-striped table-bordered table-hover" width="100%">
+                                                <thead>
+                                                   <tr>
+                                                        <th align="center">Nama</th>
+                                                        <th align="center">Alamat</th>
+                                                        <th align="center">Desa</th>
+                                                        <th align="center">Kecamatan</th>
+                                                        <th align="center">Kabupaten</th>
+                                                        <th align="center">Tingkat Kesejahteraan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php 
+                                                        foreach ($hasil as $key => $val) { 
+                                                    ?>
+                                                        <tr>
+                                                            <?php foreach ($val as $keys => $value) { ?>
+                                                                <td align="center"> 
+                                                                    <?php 
+                                                                        echo $value;
+                                                                    ?>
+                                                                </td>
+                                                            <?php } ?>
+                                                            <td align="center"><?=$tingkatKesejahteraan?></td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-10 col-sm-offset-1">
+                                            <div class="col-sm-4 col-sm-offset-2">
+                                                <div class="choice" data-toggle="wizard-radio" rel="tooltip" onclick="setvalidvalue(0)" title="Data Tidak Valid">
+                                                    <input type="radio" >
+                                                    <div class="icon">
+                                                        <i class="fa fa-times"></i>
+                                                    </div>
+                                                    <h6>Invalid</h6>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="choice active" data-toggle="wizard-radio" rel="tooltip" onclick="setvalidvalue(1)" title="Data Valid">
+                                                    <input type="radio">
+                                                    <div class="icon">
+                                                        <i class="fa fa-check"></i>
+                                                    </div>
+                                                    <h6>Valid</h6>
+                                                </div>
+                                            </div>                                        
+                                        </div> 
                                     </div>
                                 </div>
                             </div>
@@ -211,7 +285,10 @@
                             <?php if(!empty($idsurvey)) { ?>
                                 <input type='button' class='btn btn-next btn-fill btn-success btn-wd btn-sm' name='next' value='Next' />
                             <?php } ?>
-                                <input type='submit' class='btn btn-finish btn-fill btn-primary btn-wd btn-sm' name='finish' value='Finish' />
+                                <input type="hidden" name="hasil" value="<?=$hasilAHP?>">
+                                <input type="hidden" name="idsurvey" value="<?=$idsurvey?>">
+                                <input type="hidden" name="isvalid" value="1" id="isvalid">
+                                <input type='submit' class='btn btn-finish btn-fill btn-primary btn-wd btn-sm' name='finished' value='Finish' />
         
                             </div>
                             
@@ -224,215 +301,7 @@
                 </div>
             </div> <!-- wizard container -->
             <br>
-            <br>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-th-list fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge"><?= number_format($total,0,",",".") ?></div>
-                                    <div>Data Target</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="keluarga/getall" target="blank">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-pencil-square-o fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge"><?= number_format($record,0,",",".") ?></div>
-                                    <div>Data Record</div>
-                                </div>
-                            </div>
-                        </div>
-                       <a href="survey/getall" target="blank">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-check fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge"><?= number_format($valid,0,",",".") ?></div>
-                                    <div>Data Valid</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="survey/getall" target="blank">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <div class="panel panel-red">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-times fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge"><?= number_format($invalid,0,",",".") ?></div>
-                                    <div>Data Invalid</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="survey/getall" target="blank">
-                            <div class="panel-footer">
-                                <span class="pull-left">View Details</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- /.row -->
-            <div class="row">
-                <div class="col-lg-8">
-                    <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Grafik Tingkat Kemiskinan Berdasarkan Kecamatan
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="row">
-                                <!-- /.col-lg-4 (nested) -->
-                                <div id="load" align="center"> 
-                                    <img src="<?= base_url() ?>images/loading.gif" alt="Mountain View" style="width:100px;height:100px;">
-                                </div>
-                                <div class="col-lg-12">
-                                    <div id="morris-bar-chart"></div>
-                                </div>
-                                <!-- /.col-lg-8 (nested) -->
-                            </div>
-                            <!-- /.row -->
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="chat-panel panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Perbandingan Data Per Kecamatan
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Kecamatan</th>
-                                            <th>Target</th>
-                                            <th>Masuk</th>
-                                            <th>%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php foreach ($tabelkecamatan as $key) { ?>
-                                        <tr>
-                                            <td><?=$key['namakecamatan'] ?></td>
-                                            <td><?= number_format($key['target'],0,",",".") ?></td>
-                                            <td><?= number_format($key['masuk'],0,",",".") ?></td>
-                                            <td><?= round($key['masuk']/$key['target'], 2) * 100 ?></td>
-                                        </tr>
-                                    <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <!-- /.panel-body -->
-                        <div class="panel-footer">
-
-                        </div>
-                        <!-- /.panel-footer -->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                     <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Kategori Hampir Miskin
-                        </div>
-                        <div class="panel-body">
-                            <div id="load1" align="center"> 
-                                <img src="<?= base_url() ?>images/loading.gif" alt="Mountain View" style="width:100px;height:100px;">
-                            </div>
-                            <div id="morris-donut-chart"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <div class="col-lg-4">
-                     <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Kategori Miskin
-                        </div>
-                        <div class="panel-body">
-                            <div id="load2" align="center"> 
-                                <img src="<?= base_url() ?>images/loading.gif" alt="Mountain View" style="width:100px;height:100px;">
-                            </div>
-                            <div id="morris-donut-chart2"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <div class="col-lg-4">
-                     <!-- /.panel -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Kategori Sangat Miskin
-                        </div>
-                        <div class="panel-body">
-                            <div id="load3" align="center"> 
-                                <img src="<?= base_url() ?>images/loading.gif" alt="Mountain View" style="width:100px;height:100px;">
-                            </div>
-                            <div id="morris-donut-chart3"></div>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-4 -->
-            </div>
-            <!-- /.row -->
+            <br>           
         </div>
         <?php } ?>
         <!-- /#page-wrapper -->
@@ -594,11 +463,11 @@
     <!-- Metis Menu Plugin JavaScript -->
     <script src="<?= base_url() ?>css/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-    <!-- Morris Charts JavaScript -->
+    <!-- Morris Charts JavaScript --
     <script src="<?= base_url() ?>css/bower_components/raphael/raphael-min.js"></script>
     <script src="<?= base_url() ?>css/bower_components/morrisjs/morris.min.js"></script>
     <script src="<?= base_url() ?>css/js/morris-data.js"></script>
-
+    -->
     <!-- Custom Theme JavaScript -->
     <script src="<?= base_url() ?>css/dist/js/sb-admin-2.js"></script>
 
@@ -617,22 +486,11 @@
     ?>
 
     <script type="text/javascript">
-    var col = new String();
-    var x=1;var y;
-
-    function blink()
-    {
-        if(x%2) 
-        {
-            col = "rgb(255,0,0)";
-        }else{
-            col = "rgb(255,255,255)";
-        }
-
-        aF.style.color=col;x++;if(x>2){x=1};setTimeout("blink()",500);
+    function setvalidvalue(elem) {
+        var x = document.getElementById("isvalid");
+        x.value = elem;
     }
     </script>
-
 
 </body>
 

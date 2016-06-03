@@ -108,6 +108,127 @@ class M_dashboard extends M_model
 		order by value desc");
 		return $q->result();
     }
+
+    public function dashboard($idakun)
+    {
+    	if(!empty($idakun)) {
+	    	$q = $this->db->query("
+			select idakun, namadesa as iddesa, namakecamatan as idkecamatan, namakabupaten as idkabupaten, namaprovinsi as idprovinsi, 
+			sum(target) as dataTarget, sum(masuk) as dataMasuk, sum(valid) as dataValid, sum(invalid) as dataInvalid from (
+			select a.idakun, namadesa, namakecamatan, namakabupaten, namaprovinsi, count(k.idkeluarga) as target, count(s.idkeluarga) as masuk,
+			case 
+			when isvalid = '1' then count(s.idkeluarga)
+			end as valid,
+			case 
+			when isvalid is null or isvalid = '0' then count(s.idkeluarga)
+			end as invalid
+			from ta.ke_akses a
+			join ta.v_daerah d on a.iddesa = d.iddesa
+			join ta.ms_keluarga k on k.iddesa = a.iddesa
+			left join ta.ke_survey3 s on s.idkeluarga  = k.idkeluarga
+			group by a.idakun, namadesa, namakecamatan, namakabupaten, namaprovinsi, isvalid
+			) a where idakun = $idakun
+			group by idakun, namadesa, namakecamatan, namakabupaten, namaprovinsi");
+
+			$result['code'] = "212";
+	    	$result['message'] = "Data Dashboard";
+	        $result['data'] = $q->row();
+	    } else
+	    {
+	    	$result['code'] = "515";
+	    	$result['message'] = "Data Dashboard Tidak Dapat Diakses";
+	        $result['data'] = null;
+	    }
+		return $result;
+    }
+
+
+    function getVariabel($idsurvey) {
+        $this->db->where('idsurvey', $idsurvey);
+        $dataSurvey = $this->db->get('ta.ke_survey2')->row_array();
+        //print_r($dataSurvey);
+
+        $sum = array();
+        $hasil = array();
+        $hasil[] = null;
+        $hasil[] = null;
+        $hasil[] = $dataSurvey['jeniskelamin'];
+        $hasil[] = $dataSurvey['umur'];
+        $hasil[] = $dataSurvey['pendidikan'];
+        $hasil[] = $dataSurvey['pekerjaan'];
+        $hasil[] = $dataSurvey['jmlhindividu'];
+        $hasil[] = null;
+        $hasil[] = $dataSurvey['penguasaanbangunan'];
+        $hasil[] = $dataSurvey['jenisatap'];
+        $hasil[] = $dataSurvey['jenisdinding'];
+        $hasil[] = $dataSurvey['jenislantai'];
+        $hasil[] = $dataSurvey['airminum'];
+        $hasil[] = $dataSurvey['penerangan'];
+        $hasil[] = $dataSurvey['bahanbakarmasak'];
+        $hasil[] = $dataSurvey['fasilitasbab'];
+        $hasil[] = $dataSurvey['pembuangantinja'];
+
+        $this->db->order_by('idvariabel', 'asc');
+        $query = $this->db->get('ta.ms_variabel')->result_array();
+        
+        foreach ($query as $key) {
+            $data[$key['idvariabel']][] = $key['namavariabel'];
+            $data[$key['idvariabel']][] = $key['bobot'];
+            
+            $data[$key['idvariabel']][] = $hasil[$key['idvariabel']];
+            $data[$key['idvariabel']][] = $hasil[$key['idvariabel']] * $key['bobot'];
+            $data[$key['idvariabel']][] = null;
+
+            if(empty($hasil[$key['idvariabel']])) {
+                $index = $key['idvariabel'];
+                $sum[$index] = 0;
+            } else 
+            {
+                $sum[$index] += ($hasil[$key['idvariabel']] * $key['bobot']);
+                //$data[$key['idvariabel']][]
+            }
+        }
+
+        $data[1][3] = $sum[1];
+        $data[7][3] = $sum[7];
+
+        $data[1][4] = $sum[1] * $data[1][1];
+        $data[7][4] = $sum[7] * $data[7][1];
+
+        $data[17][4] = $data[1][4] + $data[7][4];
+        $kesejahteraan = $data[17][4];
+        $query = $this->db->query("select nama from ta.ms_kesejahteraan 
+        	where batasbawah <= $kesejahteraan and $kesejahteraan < batasatas")->row_array();
+        $data[17][5] = $query['nama'];
+
+
+        return $data;
+    }
+
+    function getKesejahteraan() {
+        $this->db->order_by('idkesejahteraan', 'asc');
+        $query = $this->db->get('ta.ms_kesejahteraan')->result_array();
+        foreach ($query as $key) {
+            $data[$key['idkesejahteraan']][] = $key['nama'];
+            $data[$key['idkesejahteraan']][] = $key['batasbawah'];
+            $data[$key['idkesejahteraan']][] = $key['batasatas'];
+        }
+        return $data;
+    }
+
+    function getKeluarga($idkeluarga) {
+        $this->db->where('idkeluarga', $idkeluarga);
+        $query = $this->db->get('ta.v_survey3')->result_array();
+        foreach ($query as $key) {
+            $data[$key['idkeluarga']][] = $key['nama'];
+            $data[$key['idkeluarga']][] = $key['alamat'];
+            $data[$key['idkeluarga']][] = $key['namadesa'];
+            $data[$key['idkeluarga']][] = $key['namakecamatan'];
+            $data[$key['idkeluarga']][] = $key['namakabupaten'];
+        }
+        return $data;
+    }
+
 }
 
 ?>

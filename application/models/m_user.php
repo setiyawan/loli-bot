@@ -62,7 +62,7 @@ class M_user extends M_Model
 	                if($row->status == 1 && ($row->jabatan == 'surveyor') ){
 	                	$result['code'] = "212";
 		            	$result['message'] = "Selamat, anda berhasil login";
-		                $result['data'] = $query->result_array();
+		                $result['data'] = $query->row();
 	                }
 	                else if($row->status != 1){
 	                	$result['code'] = "515";
@@ -218,6 +218,38 @@ class M_user extends M_Model
 				'data' => null
 				); 
     		$this->db->trans_rollback();
+    	}
+
+		return $data;
+	}
+
+	public function updatePassword($data)
+	{
+		$this->db->select('password');
+		$passwordLama = $this->db->get_where('ta.ms_akun', array('idakun' => $data['idakun']))->row();
+		$passwordLama = $passwordLama->password;
+
+		$password = md5($data['password']);
+		$password1 = md5($data['password1']);
+		$password2 = md5($data['password2']);
+
+		if($password == $passwordLama && $password1 == $password2 && !empty($data['idakun'])) 
+		{
+			$this->db->where('idakun', $data['idakun']);
+			$this->db->update('ta.ms_akun', array('password' => $password1));
+    		$data = array(
+				'code' => "212",
+				'message' => "Password Berhasil Diperbarui",
+				'data' => $data
+				); 
+    	}
+    	else
+    	{
+    		$data = array(
+				'code' => "515",
+				'message' => "Password Gagal Diperbarui",
+				'data' => null
+				); 
     	}
 
 		return $data;

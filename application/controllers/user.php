@@ -32,7 +32,7 @@ class User extends C_controller
         $a_data['input'][] = array('key' => 'file', 'label' => 'Foto', 'type' => 'F','hidden' => true, 'readonly' => false);
 
         $a_data['script'] = 'user';
-        $a_data['label'] = 'Data User';
+        $a_data['label'] = 'Daftar Akun';
         $a_data['p_key'] = 'idakun';
 
         //variabel request

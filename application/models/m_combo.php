@@ -31,6 +31,16 @@ class M_combo extends CI_Model
         return $data;
     }
 
+    function gaji($empty = '') {
+        $this->db->order_by('idgaji', 'asc');
+        $query = $this->db->get('ta.ms_gaji')->result_array();
+        //if($empty) $data[0] = '';
+        foreach ($query as $key) {
+            $data[$key['idgaji']] = $key['sektorpekerjaan'];
+        }
+        return $data;
+    }
+
     function status($empty = false) {
         if($empty) 
             $data = array('-1' => 'Pilih Semua', '1' => 'Valid', '0' => 'Tidak Valid');
@@ -55,7 +65,7 @@ class M_combo extends CI_Model
     }
 
     function pendidikan() {
-    	$data = array('0' => 'Tidak punya ijazah', '1' => 'SD/sederajat', '2' => 'SMP/sederajat' , '3' => 'SMA/sederajat' , '4' => 'Perguruan Tinggi');
+    	$data = array('4' => 'Perguruan Tinggi', '3' => 'SMA/sederajat' , '2' => 'SMP/sederajat' , '1' => 'SD/sederajat', '0' => 'Tidak punya ijazah');
     	return $data;
     }
 
@@ -107,7 +117,7 @@ class M_combo extends CI_Model
     function akun($id = '') {
         $jabatan = $this->session->userdata('jabatan');
         $idakun = $this->session->userdata('idakun');
-        if($jabatan != 'admin') $this->db->where('idakun', $idakun);
+        //if($jabatan != 'admin') $this->db->where('idakun', $idakun);
         
     	$query = $this->db->get('ta.ms_akun')->result_array();
     	foreach ($query as $key) {
@@ -130,7 +140,7 @@ class M_combo extends CI_Model
     function validator($id = '') {
         $jabatan = $this->session->userdata('jabatan');
         $idakun = $this->session->userdata('idakun');
-        if($jabatan != 'admin') $this->db->where('idakun', $idakun);
+        //if($jabatan != 'admin') $this->db->where('idakun', $idakun);
         $data[''] = "Belum Ada Validasi";
         $query = $this->db->get('ta.ms_akun')->result_array();
         foreach ($query as $key) {

@@ -80,7 +80,7 @@ class Datakesejahteraan extends C_controller
         $a_data['input'][] = array('key' => 'tk_kemiskinan', 'label' => 'Tingkat Kemiskinan', 'type' => 'S', 'option' => $this->m_combo->kesejahteraan(), 'hidden' => false, 'readonly' => false);
         
         $a_data['script'] = 'survey';
-        $a_data['label'] = 'Hasil Survey';
+        $a_data['label'] = 'Tingkat Kesejahteraan Masyarakat';
         $a_data['p_key'] = 'idsurvey';
         $a_data['sync'] = false;
         $a_data['direction'] = true;

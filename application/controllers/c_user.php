@@ -49,18 +49,9 @@ class C_user extends CI_Controller
 
     public function changePassword()
     {
-        $this->is_logged();
-        $data['idakun'] = $this->session->userdata('idakun');
-        $pass = $this->session->userdata('password');
-        $pass0 = md5($this->input->post('password'));
-        $pass1 = md5($this->input->post('password1'));
-        $pass2 = md5($this->input->post('password2'));
-        if($pass == $pass0 && $pass1 == $pass2) 
-        {
-            $data['password'] = $pass1;
-            $this->load->model('m_user');
-            $a_data = $this->m_user->update($data);
-        }
+        $data = $this->input->post();
+        $this->load->model('m_user');
+        $a_data = $this->m_user->updatePassword($data);
         echo json_encode($a_data);
     }
 

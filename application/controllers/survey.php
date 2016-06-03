@@ -20,6 +20,7 @@ class Survey extends C_controller
         $status = $this->m_combo->status();
         $jeniskelamin = $this->m_combo->jeniskelamin();
         $pendidikan = $this->m_combo->pendidikan();
+        $gaji = $this->m_combo->gaji();
         $penguasaanbangunan = $this->m_combo->penguasaanbangunan();
         $jenisatap = $this->m_combo->jenisatap();
         $jenisdinding = $this->m_combo->jenisdinding();
@@ -53,8 +54,9 @@ class Survey extends C_controller
         $a_data['input'][] = array('key' => 'jeniskelamin', 'label' => 'Jenis Kelamin', 'type' => 'S', 'option' => $jeniskelamin, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'umur', 'label' => 'Umur', 'type' => 'T', 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'pendidikan', 'label' => 'Pendidikan', 'type' => 'S', 'option' => $pendidikan, 'hidden' => true, 'readonly' => true);
-        $a_data['input'][] = array('key' => 'pekerjaan', 'label' => 'Gaji', 'type' => 'T', 'hidden' => true, 'readonly' => true);
+        $a_data['input'][] = array('key' => 'pekerjaan', 'label' => 'Sektor Pekerjaan', 'type' => 'S', 'option' => $gaji, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'jmlhindividu', 'label' => 'Jumlah Individu', 'type' => 'T', 'hidden' => true, 'readonly' => true);
+        
         $a_data['input'][] = array('key' => 'penguasaanbangunan', 'label' => 'Penguasaan Bangunan', 'type' => 'S', 'option' => $penguasaanbangunan, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'jenisatap', 'label' => 'Jenis Atap', 'type' => 'S', 'option' => $jenisatap, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'jenisdinding', 'label' => 'Jenis Dinding', 'type' => 'S', 'option' => $jenisdinding, 'hidden' => true, 'readonly' => true);
@@ -64,6 +66,7 @@ class Survey extends C_controller
         $a_data['input'][] = array('key' => 'bahanbakarmasak', 'label' => 'Bahan Bakar Memasak', 'type' => 'S', 'option' => $bahanbakarmasak, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'fasilitasbab', 'label' => 'Fasilitas BAB', 'type' => 'S', 'option' => $fasilitasbab, 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'pembuangantinja', 'label' => 'Tempat Pembuangan Tinja', 'type' => 'S', 'option' => $pembuangantinja, 'hidden' => true, 'readonly' => true);
+        
         $a_data['input'][] = array('key' => 'tglsurvey', 'label' => 'Tgl Survey', 'type' => 'D', 'hidden' => false, 'readonly' => true);
         $a_data['input'][] = array('key' => 'isvalid', 'label' => 'Valid?', 'type' => 'S', 'option' => $status, 'hidden' => false, 'readonly' => false);
         $a_data['input'][] = array('key' => 'idvalidator', 'label' => 'Validator', 'type' => 'S', 'option' => $validator, 'hidden' => false, 'readonly' => true);
@@ -79,7 +82,7 @@ class Survey extends C_controller
         $a_data['p_key'] = 'idsurvey';
         $a_data['sync'] = false;
         $a_data['direction'] = true;
-        $a_data['filter'] = $this->m_combo->status(true);
+        //$a_data['filter'] = $this->m_combo->status(true);
 
         //variabel request
         $this->load->model('m_auth');

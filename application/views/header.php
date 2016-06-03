@@ -12,6 +12,10 @@
     <title>Survey Tingkat Kemiskinan</title>
 
     <link rel="icon" href="<?= base_url() ?>images/icon.png">
+ 
+    <!--
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
+    <!- End Form Wizard-->
 
     <link href="<?= base_url() ?>css/bootstrap.min.css" rel="stylesheet">
 
@@ -39,6 +43,10 @@
 
     <!-- DataTables CSS -->
     <link href="<?= base_url() ?>css/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
+    <!-- Start Form Wizard-->
+    
+    <link href="<?= base_url() ?>assets/css/gsdk-base.css" rel="stylesheet" />
 <!--
     <!- DataTables Responsive CSS ->
     <link href="<?= base_url() ?>css/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">

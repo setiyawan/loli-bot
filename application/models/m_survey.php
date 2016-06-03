@@ -12,12 +12,13 @@ class M_survey extends M_model
         define('order', 'idsurvey');
     }
 
-    public function getall($start = 0, $filter = false){
+    public function getall($start = 0, $filter = ''){
  		$jabatan = $this->session->userdata('jabatan');
         $idakun = $this->session->userdata('idakun');
         if($jabatan != 'admin') {
-        	$where = "idvalidator=$idakun OR idvalidator is null";
-        	$this->db->where($where);
+        	$filter['isvalid'] = null;
+        	//$where = "idvalidator=$idakun OR idvalidator is null OR isvalid != '1'";
+        	//$this->db->where($where);
         }
         if(!empty($filter)) $this->db->where($filter);
  	 	$this->db->order_by(order, 'asc');

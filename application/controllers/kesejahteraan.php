@@ -24,7 +24,7 @@ class Kesejahteraan extends C_controller
         $a_data['input'][] = array('key' => 'batasbawah', 'label' => 'Batas Bawah', 'type' => 'T', 'hidden' => false, 'readonly' => false);
         $a_data['input'][] = array('key' => 'batasatas', 'label' => 'Batas Atas', 'type' => 'T', 'hidden' => false, 'readonly' => false);
         $a_data['script'] = 'kesejahteraan';
-        $a_data['label'] = 'Tingkat Kesejahteraan';
+        $a_data['label'] = 'Kategori Kemiskinan';
         $a_data['p_key'] = 'idkesejahteraan';
 
         //variabel request

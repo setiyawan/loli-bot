@@ -28,7 +28,7 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <button type="submit" class="btn btn-lg btn-success btn-block">Login</button>
+                                <button type="submit" class="btn btn-lg btn-fill btn-success btn-block">Login</button>
                             </fieldset>
                         </form>
                     </div>
