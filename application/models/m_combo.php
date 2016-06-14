@@ -45,7 +45,7 @@ class M_combo extends CI_Model
         if($empty) 
             $data = array('-1' => 'Pilih Semua', '1' => 'Valid', '0' => 'Tidak Valid');
         else
-    	   $data = array('1' => 'Valid', '0' => 'Tidak Valid');
+    	   $data = array( '' => '', '1' => 'Valid', '0' => 'Tidak Valid');
     	return $data;
     }
 

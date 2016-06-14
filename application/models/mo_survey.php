@@ -169,15 +169,40 @@ class Mo_survey extends M_model
  		return $data;
  	}
 
- 	public function getall($start = 0){
- 		$jabatan = $this->session->userdata('jabatan');
-        $idakun = $this->session->userdata('idakun');
-        if($jabatan != 'admin') $this->db->where('idakun', $idakun);
+ 	// public function getall($start = 0){
+ 	// 	$jabatan = $this->session->userdata('jabatan');
+  //       $idakun = $this->session->userdata('idakun');
+  //       if($jabatan != 'admin') $this->db->where('idakun', $idakun);
         
-        $this->db->select('idsurvey, idkeluarga, tglsurvey');
- 	 	$this->db->order_by(order, 'asc');
- 		$result = $this->db->get(table, 1000, $start);
- 		if($result->num_rows() > 0) 
+  //       $this->db->select('idsurvey, idkeluarga, tglsurvey');
+ 	//  	$this->db->order_by(order, 'asc');
+ 	// 	$result = $this->db->get(table, 1000, $start);
+ 	// 	if($result->num_rows() > 0) 
+		// {
+  //   		$data = array(
+		// 		'code' => "212",
+		// 		'message' => "Daftar " . header,
+		// 		'data' => $result->result_array()
+		// 		); 
+  //   	}
+  //   	else
+  //   	{
+  //   		$data = array(
+		// 		'code' => "515",
+		// 		'message' => header . " Tidak Ditemukan",
+		// 		'data' => null
+		// 		); 
+  //   	}
+  //   	return $data;
+ 	// }
+
+ 	public function getall($idakun = 0)
+ 	{
+ 		$result = $this->db->query("select idsurvey, idkeluarga, nama, tglsurvey, alamat, namadesa, namakecamatan, namakabupaten, namaprovinsi from ta.v_survey3 s
+		join ta.ke_akses a on a.iddesa = s.iddesa and s.idkecamatan = a.idkecamatan
+		where a.idakun = $idakun"); 
+ 		
+		if($result->num_rows() > 0) 
 		{
     		$data = array(
 				'code' => "212",

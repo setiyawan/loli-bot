@@ -29,7 +29,7 @@ class Keluarga extends C_controller
         $a_data['input'][] = array('key' => 'alamat', 'label' => 'Alamat', 'type' => 'T', 'hidden' => false, 'readonly' => false);
         $a_data['input'][] = array('key' => 'nama', 'label' => 'Nama', 'type' => 'T', 'hidden' => false, 'readonly' => false);
         $a_data['script'] = 'keluarga';
-        $a_data['label'] = 'Data Keluarga';
+        $a_data['label'] = 'Target Keluarga Yang Akan Disurvey';
         $a_data['p_key'] = 'idkeluarga';
 
         //variabel request

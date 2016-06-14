@@ -19,6 +19,7 @@ class M_model extends CI_Model
     	$data = $this->db->count_all_results(table);
     	return $data;
     }
+    
 	public function add($data)
  	{
  		$result = $this->db->get_where(table, array(key => $data[key]));

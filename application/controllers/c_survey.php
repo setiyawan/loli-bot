@@ -35,10 +35,40 @@ class C_survey extends C_controller
         echo json_encode($a_data);
     }
 
+    // public function getall($data='')
+    // {
+    //     $a_filter = array();
+    //     $reqpage = 0;
+    //     $page = $this->input->post('page');
+    //     $valid = $this->input->post('valid');
+
+    //     if($valid == null) $valid = -1;
+    //     if($valid != -1) $a_filter['isvalid'] = $valid;
+        
+    //     if(!empty($page)) $reqpage = $page * 1000;
+        
+    //     $this->load->model(model);
+    //     $a_data = $this->{model}->getall($reqpage, $a_filter);
+    //     $a_data['datacount'] = ceil($this->{model}->datacount()/1000);
+        
+    //     if(!empty($data)) {
+    //         $a_data['message'] = $data['message'];
+    //         $a_data['code'] = $data['code'];
+    //     }
+    //     else
+    //         $a_data['message'] = "";
+        
+    //     $a_data['page'] = $reqpage/1000;
+    //     $a_data['valid'] = $valid;
+    //     $this->input($a_data);
+    //     //json_encode($a_data);
+    // }
+
     public function getall($data='')
     {
         $a_filter = array();
         $reqpage = 0;
+        $idakun = $this->input->post('idakun');
         $page = $this->input->post('page');
         $valid = $this->input->post('valid');
 
@@ -48,15 +78,8 @@ class C_survey extends C_controller
         if(!empty($page)) $reqpage = $page * 1000;
         
         $this->load->model(model);
-        $a_data = $this->{model}->getall($reqpage, $a_filter);
+        $a_data = $this->{model}->getall($idakun);
         $a_data['datacount'] = ceil($this->{model}->datacount()/1000);
-        
-        if(!empty($data)) {
-            $a_data['message'] = $data['message'];
-            $a_data['code'] = $data['code'];
-        }
-        else
-            $a_data['message'] = "";
         
         $a_data['page'] = $reqpage/1000;
         $a_data['valid'] = $valid;
