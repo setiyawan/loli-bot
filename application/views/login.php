@@ -22,11 +22,11 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" name="password" type="password" required>
                                 </div>
-                                <div class="checkbox">
+                                <!-- <div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>
-                                </div>
+                                </div> -->
                                 <!-- Change this to a button or input when using this as a form -->
                                 <button type="submit" class="btn btn-lg btn-fill btn-success btn-block">Login</button>
                             </fieldset>

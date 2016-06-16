@@ -160,7 +160,8 @@
                                                                 <td align="<?=$align ?>"> 
                                                                     <?php 
                                                                         if($keys == 0 && $key != 1 && $key != 7) echo "&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp";
-                                                                        echo $value;
+                                                                        if($keys > 0 && !empty($value)) echo round($value, 3);
+                                                                        else echo $value;
                                                                     ?>
                                                                 </td>
                                                             <?php } ?>
@@ -169,7 +170,7 @@
                                                     <tr>
                                                         <td></td>
                                                         <td colspan="4" align="center"> <b> Hasil Akhir AHP</b></td>
-                                                        <td align="center"> <b> <?=$hasilAHP ?> </b> </td>
+                                                        <td align="center"> <b> <?=round($hasilAHP, 3) ?> </b> </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -180,7 +181,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane" id="clsutering">
-                                <h4 class="info-text">Hasil AHP : <b> <?=$hasilAHP ?> </b></h4>
+                                <h4 class="info-text">Hasil AHP : <b> <?=round($hasilAHP, 3) ?> </b></h4>
                                 <div class="row">
                                     <!-- /.panel-heading -->
                                     <div class="panel-body">

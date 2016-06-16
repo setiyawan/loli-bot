@@ -145,8 +145,20 @@ class M_dashboard extends M_model
 
     function getVariabel($idsurvey) {
         $this->db->where('idsurvey', $idsurvey);
-        $dataSurvey = $this->db->get('ta.ke_survey2')->row_array();
-        //print_r($dataSurvey);
+        $dataSurvey = $this->db->get('ta.ke_survey3')->row_array();
+        
+        $b_umur = 15;
+        $a_umur = 64;
+        $umur = 1;
+
+        if($dataSurvey['umur'] > $a_umur) $umur =  $dataSurvey['umur'] / $a_umur;
+        else 
+            if($dataSurvey['umur'] < $b_umur) $umur = $b_umur / $dataSurvey['umur'];
+        $dataSurvey['umur'] = $umur;
+        $dataSurvey['pendidikan'] = 4 - $dataSurvey['pendidikan'];
+        $query = $this->db->get_where('ta.ms_gaji', array('idgaji' => $dataSurvey['pekerjaan']));
+        $nominal = $query->row()->nominal;
+        $dataSurvey['pekerjaan'] = ($dataSurvey['jmlhindividu'] / $nominal) * 1000000;     
 
         $sum = array();
         $hasil = array();
@@ -201,8 +213,10 @@ class M_dashboard extends M_model
         	where batasbawah <= $kesejahteraan and $kesejahteraan < batasatas")->row_array();
         $data[17][5] = $query['nama'];
 
-
+        // print_r($data);
+        // die();
         return $data;
+
     }
 
     function getKesejahteraan() {

@@ -36,7 +36,7 @@ class Home extends C_controller
         $kabupaten = $this->m_combo->kabupaten();
         $kecamatan = $this->m_combo->kecamatan();
         $desa = $this->m_combo->desa(true);
-        $keluarga = $this->m_combo->keluarga($start);
+        $keluarga = $this->m_combo->keluarga2($start);
         $validator = $this->m_combo->validator();
 
         $a_data['input'][] = array('key' => 'idsurvey', 'label' => 'Id Survey', 'type' => 'T', 'hidden' => true, 'readonly' => true);
@@ -99,7 +99,7 @@ class Home extends C_controller
         if(!empty($page)) $reqpage = $page * 1000;
         $this->is_logged();
         $this->load->model(model2);
-        $a_data = $this->{model2}->getall($reqpage, $a_filter);
+        $a_data = $this->{model2}->getall2($reqpage, $a_filter);
         
         if(!empty($data)) {
             $a_data['message'] = $data['message'];
@@ -124,9 +124,17 @@ class Home extends C_controller
 
     public function finish()
     {
+        define('key', 'idsurvey');
+
+        $this->is_logged();
         $data = $this->input->post();
-        print_r($data);
-        die();
+        $data['idvalidator'] = $this->session->idakun;
+        $data['tglvalidasi'] = date('Y-m-d');
+        $this->load->model('m_survey');
+        $data = $this->m_survey->reduce($data);
+        unset($data['hasil']);
+        $data = $this->m_survey->finish($data);
+        $this->index();
     }
 
     public function proses()
@@ -140,7 +148,7 @@ class Home extends C_controller
         if(!empty($page)) $reqpage = $page * 1000;
         $this->is_logged();
         $this->load->model(model2);
-        $a_data = $this->{model2}->getall($reqpage, $a_filter); 
+        $a_data = $this->{model2}->getall2($reqpage, $a_filter); 
 
 
         $a_data['message'] = "Data Survey Berhasil Dipilih";

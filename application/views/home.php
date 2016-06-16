@@ -35,7 +35,7 @@
             </div>
 
             <div> 
-                
+                <?php if(!empty($data)) { ?>
                 <div class="card wizard-card ct-wizard-green" id="wizardProfile">
                     <form action="" method="">
                 <!--        You can switch "ct-wizard-orange"  with one of the next bright colors: "ct-wizard-blue", "ct-wizard-green", "ct-wizard-orange", "ct-wizard-red"             -->
@@ -124,87 +124,7 @@
                                     </div>
                                     <!-- /.panel-body -->
                               </div>
-                            </div>
-                            <div class="tab-pane" id="ahp">
-                                <h4 class="info-text"> What are you doing? (checkboxes) </h4>
-                                <div class="row">
-                                   
-                                    
-                                    <div class="col-sm-10 col-sm-offset-1">
-                                        <div class="col-sm-4">
-                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                <input type="checkbox" name="jobb" value="Design">
-                                                <div class="icon">
-                                                    <i class="fa fa-pencil"></i>
-                                                </div>
-                                                <h6>Design</h6>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                <input type="checkbox" name="jobb" value="Code">
-                                                <div class="icon">
-                                                    <i class="fa fa-terminal"></i>
-                                                </div>
-                                                <h6>Code</h6>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="choice" data-toggle="wizard-checkbox">
-                                                <input type="checkbox" name="jobb" value="Develop">
-                                                <div class="icon">
-                                                    <i class="fa fa-laptop"></i>
-                                                </div>
-                                                <h6>Develop</h6>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="clsutering">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <h4 class="info-text"> Are you living in a nice area? </h4>
-                                    </div>
-                                    <div class="col-sm-7 col-sm-offset-1">
-                                         <div class="form-group">
-                                            <labe>Street Name</label>
-                                            <input type="text" class="form-control" placeholder="5h Avenue">
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                         <div class="form-group">
-                                            <label>Street Number</label>
-                                            <input type="text" class="form-control" placeholder="242">
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-5 col-sm-offset-1">
-                                         <div class="form-group">
-                                            <label>City</label>
-                                            <input type="text" class="form-control" placeholder="New York...">
-                                          </div>
-                                    </div>
-                                    <div class="col-sm-5">
-                                         <div class="form-group">
-                                            <label>Country</label><br>
-                                             <select name="country" class="form-control">
-                                                <option value="Afghanistan"> Afghanistan </option>
-                                                <option value="Albania"> Albania </option>
-                                                <option value="Algeria"> Algeria </option>
-                                                <option value="American Samoa"> American Samoa </option>
-                                                <option value="Andorra"> Andorra </option>
-                                                <option value="Angola"> Angola </option>
-                                                <option value="Anguilla"> Anguilla </option>
-                                                <option value="Antarctica"> Antarctica </option>
-                                                <option value="...">...</option>
-                                            </select>
-                                          </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </div>                      
                         </div>
                         <div class="wizard-footer">
                             <div class="pull-right">
@@ -223,6 +143,7 @@
                     </form>
                 </div>
             </div> <!-- wizard container -->
+            <?php } ?>
             <br>
             <br>
             <!-- /.row -->

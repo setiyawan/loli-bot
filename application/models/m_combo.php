@@ -185,8 +185,27 @@ class M_combo extends CI_Model
     }
 
     function keluarga($start = 0) {
+        $data = '';
+        $jabatan = $this->session->userdata('jabatan');
+        $idakun = $this->session->userdata('idakun');
+        if($jabatan != 'admin') {
+            $where = "idvalidator=$idakun OR idvalidator is null OR isvalid != '1'";
+            $this->db->where($where);
+        }
+
         $this->db->order_by('idkeluarga', 'asc');
         $query = $this->db->get('ta.v_survey3', 1000, $start*1000)->result_array();
+        foreach ($query as $key) {
+            $data[$key['idkeluarga']] = $key['nama'];
+        }
+        return $data;
+    }
+
+    function keluarga2($start = 0) {
+        $data = '';
+        $this->db->order_by('idkeluarga', 'asc');
+        $this->db->where('isvalid', null);
+        $query = $this->db->get('ta.v_survey3')->result_array();
         foreach ($query as $key) {
             $data[$key['idkeluarga']] = $key['nama'];
         }

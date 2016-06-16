@@ -12,7 +12,48 @@ class M_survey extends M_model
         define('order', 'idsurvey');
     }
 
+    public function datacount()
+    {
+    	$jabatan = $this->session->userdata('jabatan');
+        $idakun = $this->session->userdata('idakun');
+        if($jabatan != 'admin') {
+        	$where = "idvalidator=$idakun OR idvalidator is null OR isvalid != '1'";
+        	$this->db->where($where);
+        }
+    	$data = $this->db->count_all_results(table);
+    	return $data;
+    }
+
     public function getall($start = 0, $filter = ''){
+ 		$jabatan = $this->session->userdata('jabatan');
+        $idakun = $this->session->userdata('idakun');
+        if($jabatan != 'admin') {
+        	$where = "idvalidator=$idakun OR idvalidator is null OR isvalid != '1'";
+        	$this->db->where($where);
+        }
+        if(!empty($filter)) $this->db->where($filter);
+ 	 	$this->db->order_by(order, 'asc');
+ 		$result = $this->db->get('ta.v_survey3', 1000, $start);
+ 		if($result->num_rows() > 0) 
+		{
+    		$data = array(
+				'code' => "212",
+				'message' => "Daftar " . header,
+				'data' => $result->result_array()
+				); 
+    	}
+    	else
+    	{
+    		$data = array(
+				'code' => "515",
+				'message' => header . " Tidak Ditemukan",
+				'data' => null
+				); 
+    	}
+    	return $data;
+ 	}
+
+ 	public function getall2($start = 0, $filter = ''){
  		$jabatan = $this->session->userdata('jabatan');
         $idakun = $this->session->userdata('idakun');
         if($jabatan != 'admin') {
@@ -197,6 +238,29 @@ class M_survey extends M_model
 	    	}
  		}
  		return $data;
+ 	}
+
+ 	function finish($data)
+ 	{
+ 		$this->db->where(key, $data[key]);
+		$result = $this->db->update(table, $data);
+		if($result) 
+		{
+    		$data = array(
+				'code' => "212",
+				'message' => header . " Berhasil Diperbarui",
+				'data' => $data
+				); 
+    	}
+    	else
+    	{
+    		$data = array(
+				'code' => "515",
+				'message' => header . " Gagal Diperbarui",
+				'data' => null
+				); 
+    	}
+    	return $data;
  	}
 }
 

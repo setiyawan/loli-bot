@@ -86,18 +86,43 @@ class M_keluarga extends M_model
  		$query = $this->db->get_where('ta.v_keluarga', array(key => $id));
 		if ($query->num_rows() > 0){
 			$result['code'] = "212";
-        	        $result['message'] = "Detail " . header;
-                        $row = $query->result_array();
-                        $result['data'] = $row;
-                                   
-                }
-                else{
-        	        $result['code'] = "515";
-        	        $result['message'] = header . " Tidak Ditemukan";
-        	        $result['data'] = null;	
-                }
-                return $result;
- 	}	
+	        $result['message'] = "Detail " . header;
+                $row = $query->result_array();
+                $result['data'] = $row;
+                           
+        }
+        else{
+	        $result['code'] = "515";
+	        $result['message'] = header . " Tidak Ditemukan";
+	        $result['data'] = null;	
+        }
+        return $result;
+ 	}
+
+ 	public function listSurvey($id) {
+ 		$query = $this->db->query("select idkeluarga, nama, alamat from ta.v_keluarga s
+			join ta.ke_akses a on a.iddesa = s.iddesa and s.idkecamatan = a.idkecamatan
+			where a.idakun = $id and s.idkeluarga not in
+			(
+			select idkeluarga from ta.v_survey3 s
+			join ta.ke_akses a on a.iddesa = s.iddesa and s.idkecamatan = a.idkecamatan
+			where a.idakun = $id
+			)
+			order by alamat, nama asc");
+ 		if (count($query->result() > 0)){
+			$result['code'] = "212";
+	        $result['message'] = "Detail " . header;
+                $row = $query->result_array();
+                $result['data'] = $row;
+                           
+        }
+        else{
+	        $result['code'] = "515";
+	        $result['message'] = header . " Tidak Ditemukan";
+	        $result['data'] = null;	
+        }
+        return $result;
+ 	}
 }
 
 ?>

@@ -11,6 +11,12 @@ class M_gaji extends M_model
         define('header', 'Gaji');
         define('order', 'idgaji');
     }
+
+    public function getNominalPekerjaan($id) {
+    	$query = $this->db->get_where('ta.ms_gaji', array('idgaji' => $id));
+    	print_r($query);
+    	die();
+    }
 }
 
 ?>
