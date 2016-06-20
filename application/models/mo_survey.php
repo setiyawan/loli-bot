@@ -47,8 +47,9 @@ class Mo_survey extends M_model
  				} else if($key == 'pendidikan') {
  					$value = 4 - $value;
  				} else if($key == 'pekerjaan') {
- 					if($value != 0)
- 						$value = ($data['jmlhindividu']/$value) * 1000000;
+ 					$q = $this->db->get_where('ta.ms_gaji', array('idgaji' => $value));
+ 					$value = $q->row()->nominal;
+ 					$value = ($data['jmlhindividu']/$value) * 1000000;
  				}
 
  				if(empty($hasil[$parent])) $hasil[$parent] = 0;
