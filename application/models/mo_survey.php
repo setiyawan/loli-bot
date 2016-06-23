@@ -84,7 +84,7 @@ class Mo_survey extends M_model
 		return $data;
  	}
 
- 	public function sync()
+ 	public function update($data)
  	{
  		$variabel = array();
  		$variabel['jeniskelamin'] 		= 2;
@@ -104,104 +104,64 @@ class Mo_survey extends M_model
 
  		$umur[0] = 15;
  		$umur[1] = 64;
- 		$berhasil = 0;
- 		$gagal = 0;
- 		$this->db->order_by("idsurvey", "asc");
- 		$query = $this->db->get(table, 5000, 73000);
- 		$a_data = $query->result_array();
- 		foreach ($a_data as $keys => $data) {
- 			foreach ($data as $key => $value) {
-	 			if(!empty($variabel[$key])) {
-	 				$query = $this->db->get_where('ta.ms_variabel', array('idvariabel' => $variabel[$key]));
-	 				$bobot = $query->row()->bobot;
-	 				$parent = $query->row()->idparent;
-	 				//perubahan value
-	 				if($key == 'umur') {
-	 					if($value > $umur[1]) $value = $value/$umur[1];
-	 					else if($value < $umur[0]) $value = $umur[0]/$value;
-	 					else $value = 1;
-	 				} else if($key == 'pendidikan') {
-	 					$value = 4 - $value;
-	 				} else if($key == 'pekerjaan') {
-	 					$query = $this->db->get_where('ta.ms_gaji', array('idgaji' => $value));
-	 					$value = $query->row()->nominal;
-	 					if($value != 0)
-	 						$value = ($data['jmlhindividu']/$value) * 1000000;
-	 				}
 
-	 				if(empty($hasil[$parent])) $hasil[$parent] = 0;
-	 				$hasil[$parent] += ($bobot * $value);
-	 			}
-	 		}
 
-	 		$result = 0;
-	 		foreach ($hasil as $key => $value) {
-	 			$query = $this->db->get_where('ta.ms_variabel', array('idvariabel' => $key));
-	 			$bobot = $query->row()->bobot;
-	 			$result += ($bobot * $value);
-	 		}
+ 		foreach ($data as $key => $value) {
+ 			if(!empty($variabel[$key])) {
+ 				$query = $this->db->get_where('ta.ms_variabel', array('idvariabel' => $variabel[$key]));
+ 				$bobot = $query->row()->bobot;
+ 				$parent = $query->row()->idparent;
+ 				//perubahan value
+ 				if($key == 'umur') {
+ 					if($value > $umur[1]) $value = $value/$umur[1];
+ 					else if($value < $umur[0]) $value = $umur[0]/$value;
+ 					else $value = 1;
+ 				} else if($key == 'pendidikan') {
+ 					$value = 4 - $value;
+ 				} else if($key == 'pekerjaan') {
+ 					$q = $this->db->get_where('ta.ms_gaji', array('idgaji' => $value));
+ 					$value = $q->row()->nominal;
+ 					$value = ($data['jmlhindividu']/$value) * 1000000;
+ 				}
 
-	 		$data['hasil'] = round($result, 3);
-	 		unset($result);
-	 		unset($hasil);
-	 		
-	 		$sync['idsurvey'] = $data['idsurvey'];
-	 		$sync['hasil'] = $data['hasil'];
-
-	 		$this->db->where(key, $data[key]);
-			$results = $this->db->update(table, $sync);
-			if($results) 
-			{
-	    		$data = array(
-					'code' => "212",
-					'message' => header . " Berhasil Diperbarui Sebanyak " . ++$berhasil . " Data",
-					'data' => $data
-					);
-	    	}
-	    	else
-	    	{
-	    		$data = array(
-					'code' => "515",
-					'message' => header . " Gagal Diperbarui Sebanyak " . ++$gagal . " Data",
-					'data' => null
-					); 
-	    	}
+ 				if(empty($hasil[$parent])) $hasil[$parent] = 0;
+ 				$hasil[$parent] += ($bobot * $value);
+ 			}
  		}
- 		return $data;
- 	}
+ 		
+ 		foreach ($hasil as $key => $value) {
+ 			$query = $this->db->get_where('ta.ms_variabel', array('idvariabel' => $key));
+ 			$bobot = $query->row()->bobot;
+ 			if(empty($result)) $result = 0;
+ 			$result += ($bobot * $value);
+ 		}
 
- 	// public function getall($start = 0){
- 	// 	$jabatan = $this->session->userdata('jabatan');
-  //       $idakun = $this->session->userdata('idakun');
-  //       if($jabatan != 'admin') $this->db->where('idakun', $idakun);
-        
-  //       $this->db->select('idsurvey, idkeluarga, tglsurvey');
- 	//  	$this->db->order_by(order, 'asc');
- 	// 	$result = $this->db->get(table, 1000, $start);
- 	// 	if($result->num_rows() > 0) 
-		// {
-  //   		$data = array(
-		// 		'code' => "212",
-		// 		'message' => "Daftar " . header,
-		// 		'data' => $result->result_array()
-		// 		); 
-  //   	}
-  //   	else
-  //   	{
-  //   		$data = array(
-		// 		'code' => "515",
-		// 		'message' => header . " Tidak Ditemukan",
-		// 		'data' => null
-		// 		); 
-  //   	}
-  //   	return $data;
- 	// }
+ 		$data['hasil'] = round($result, 3);
+ 		$result = $this->db->get_where(table, $data);
+		if ($result->num_rows() > 0){
+			$data = array(
+				'code' => "515",
+				'message' => header . " Sudah Ditambahkan Sebelumnya",
+				'data' => null
+				);
+		}
+		else{
+			$this->db->update(table, $data); 
+			$data = array(
+				'code' => "212",
+				'message' => header . " Berhasil ditambahkan",
+				'data' => $data
+				);			
+		}
+		return $data;
+ 	}
 
  	public function getall($idakun = 0)
  	{
- 		$result = $this->db->query("select idsurvey, idkeluarga, nama, tglsurvey, alamat, namadesa, namakecamatan, namakabupaten, namaprovinsi from ta.v_survey3 s
-		join ta.ke_akses a on a.iddesa = s.iddesa and s.idkecamatan = a.idkecamatan
-		where a.idakun = $idakun"); 
+ 		$result = $this->db->query("select idsurvey, idkeluarga, nama, tglsurvey, alamat, namadesa, namakecamatan, namakabupaten, namaprovinsi, coalesce(isvalid, '-') as isvalid 
+ 			from ta.v_survey2 s
+			join ta.ke_akses a on a.iddesa = s.iddesa and s.idkecamatan = a.idkecamatan
+			where a.idakun = $idakun order by idsurvey"); 
  		
 		if($result->num_rows() > 0) 
 		{

@@ -48,6 +48,7 @@ class Datakesejahteraan extends C_controller
         
         if(!empty($data)) {
             $a_data['input'][] = array('key' => 'idkeluarga', 'label' => 'Nama Keluarga', 'type' => 'S', 'option' => $keluarga, 'hidden' => false, 'readonly' => true);
+            $a_data['input'][] = array('key' => 'alamat', 'label' => 'Alamat', 'type' => 'T', 'hidden' => false, 'readonly' => true);
 
             $a_data['input'][] = array('key' => 'hasil', 'label' => 'Indeks Kemiskinan', 'type' => 'N', 'hidden' => false, 'readonly' => true);
             $a_data['input'][] = array('key' => 'lattitude', 'label' => 'Lattitude', 'type' => 'T', 'hidden' => true, 'readonly' => true);

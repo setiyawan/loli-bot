@@ -101,6 +101,24 @@ class C_survey extends C_controller
         echo json_encode($a_data);
     }
 
+     public function update()
+    {
+        $data = $this->input->post();
+        $data['tglsurvey'] = date('Y-m-d');
+        $this->load->model(model);
+        //$data = $this->{model}->reduce($data);
+        $a_data = $this->{model}->update($data);
+        echo json_encode($a_data);
+    }
+
+    public function delete()
+    {
+        $id = $this->input->post("idsurvey");
+        $this->load->model(model);
+        $a_data = $this->{model}->delete($id);
+        echo json_encode($a_data);
+    }
+
     public function getall($data='')
     {
         $a_filter = array();
@@ -122,5 +140,13 @@ class C_survey extends C_controller
         $a_data['valid'] = $valid;
         $this->input($a_data);
         //json_encode($a_data);
+    }
+
+    public function detail()
+    {
+        $id = $this->input->post('idsurvey');
+        $this->load->model(model);
+        $a_data = $this->{model}->detail($id);
+        echo json_encode($a_data);
     }
 }
