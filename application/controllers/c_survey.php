@@ -142,7 +142,7 @@ class C_survey extends C_controller
         //json_encode($a_data);
     }
 
-    public function detail()
+    public function details()
     {
         $id = $this->input->post('idsurvey');
         $this->load->model(model);

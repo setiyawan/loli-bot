@@ -114,7 +114,7 @@ class M_dashboard extends M_model
     	if(!empty($idakun)) {
 	    	$q = $this->db->query("
 			select idakun, namadesa as iddesa, namakecamatan as idkecamatan, namakabupaten as idkabupaten, namaprovinsi as idprovinsi, 
-			sum(target) as dataTarget, sum(masuk) as dataMasuk, sum(valid) as dataValid, sum(invalid) as dataInvalid from (
+			coalesce(sum(target), 0) as dataTarget, coalesce(sum(masuk), 0) as dataMasuk, coalesce(sum(valid), 0) as dataValid, coalesce(sum(invalid), 0) as dataInvalid from (
 			select a.idakun, namadesa, namakecamatan, namakabupaten, namaprovinsi, count(k.idkeluarga) as target, count(s.idkeluarga) as masuk,
 			case 
 			when isvalid = '1' then count(s.idkeluarga)
@@ -230,8 +230,8 @@ class M_dashboard extends M_model
         return $data;
     }
 
-    function getKeluarga($idkeluarga) {
-        $this->db->where('idkeluarga', $idkeluarga);
+    function getKeluarga($idsurvey) {
+        $this->db->where('idsurvey', $idsurvey);
         $query = $this->db->get('ta.v_survey3')->result_array();
         foreach ($query as $key) {
             $data[$key['idkeluarga']][] = $key['nama'];

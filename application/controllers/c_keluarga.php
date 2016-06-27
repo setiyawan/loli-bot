@@ -30,8 +30,9 @@ class C_keluarga extends C_controller
 
     public function listSurvey($data='')
     {
+        $idakun = $this->input->post('idakun');
         $this->load->model(model);
-        $a_data = $this->{model}->listSurvey(4);
+        $a_data = $this->{model}->listSurvey($idakun);
         echo json_encode($a_data);
     }
 }
