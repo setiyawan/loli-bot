@@ -7,34 +7,34 @@ class M_user extends M_Model
 	public function __construct()
     {
         parent::__construct();
-        define('table', 'ta.ms_akun');
+        define('table', 'ms_akun');
         define('header', 'Akun');
-        define('order', 'idakun');
+        define('order', 'user_id');
     }
 
 	public function login($username, $password)
  	{
 		$this->db->select('*');
-		$query = $this->db->get_where('ta.ms_akun', array(
+		$query = $this->db->get_where('ms_akun', array(
 		'username' => $username, 
 		'password' => md5($password)
 		));
 		if ($query->num_rows() > 0){	            
 	            foreach ($query->result() as $row) {
-	                if($row->status == 1 && ($row->jabatan == 'admin' || $row->jabatan == 'validator' || $row->jabatan == 'superadmin') ){
-	                	$result['code'] = "212";
+	                if($row->status == 1){
+	                	$result['code'] = "200";
 		            	$result['message'] = "Selamat, anda berhasil login";
 		                $result['data'] = $query->result_array();
 
 						$this->db->where('username', $username);
 	                }
 	                else if($row->status != 1){
-	                	$result['code'] = "515";
+	                	$result['code'] = "402";
 			        	$result['message'] = "Akun anda belum diaktifkan, hubungi admin untuk aktivasi akun";
 			        	$result['data'] = null;
 	                }
 	                else {
-	                	$result['code'] = "515";
+	                	$result['code'] = "403";
 			        	$result['message'] = "Akun anda tidak mempunyai hak akses";
 			        	$result['data'] = null;
 	                }
@@ -42,7 +42,7 @@ class M_user extends M_Model
             
 	        }
 	        else{
-	        	$result['code'] = "515";
+	        	$result['code'] = "403";
 	        	$result['message'] = "Username atau password tidak ditemukan";
 	        	$result['data'] = null;	
 	        }
@@ -52,25 +52,24 @@ class M_user extends M_Model
  	public function c_login($username, $password)
  	{
 		$this->db->select('*');
-		$query = $this->db->get_where('ta.ms_akun', array(
+		$query = $this->db->get_where('ms_akun', array(
 		'username' => $username, 
-		'password' => md5($password),
-		'jabatan' => 'surveyor'
+		'password' => md5($password)
 		));
 		if ($query->num_rows() > 0){	            
 	            foreach ($query->result() as $row) {
 	                if($row->status == 1 && ($row->jabatan == 'surveyor') ){
-	                	$result['code'] = "212";
+	                	$result['code'] = "200";
 		            	$result['message'] = "Selamat, anda berhasil login";
 		                $result['data'] = $query->row();
 	                }
 	                else if($row->status != 1){
-	                	$result['code'] = "515";
+	                	$result['code'] = "402";
 			        	$result['message'] = "Akun anda belum diaktifkan, hubungi admin untuk aktivasi akun";
 			        	$result['data'] = null;
 	                }
 	                else {
-	                	$result['code'] = "515";
+	                	$result['code'] = "403";
 			        	$result['message'] = "Akun anda tidak mempunyai hak akses";
 			        	$result['data'] = null;
 	                }
@@ -78,7 +77,7 @@ class M_user extends M_Model
             
 	        }
 	        else{
-	        	$result['code'] = "515";
+	        	$result['code'] = "403";
 	        	$result['message'] = "Username atau password tidak ditemukan";
 	        	$result['data'] = null;	
 	        }
@@ -102,18 +101,18 @@ class M_user extends M_Model
 	    }
 	    
  		$data['password'] = md5($data['username']);
- 		$result = $this->db->get_where('ta.ms_akun', array('username' => $data['username']));
+ 		$result = $this->db->get_where('public.ms_akun', array('username' => $data['username']));
 		if ($result->num_rows() > 0){
 			$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => "Username telah terpakai, silahkan mendaftar dengan username lain",
 				'data' => null
 				);
 		}
 		else{
-			$this->db->insert('ta.ms_akun', $data); 
+			$this->db->insert('public.ms_akun', $data); 
 			$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => "Selamat, registrasi berhasil. Silakan tunggu konfirmasi dari admin. Terima kasih",
 				'data' => $data
 				);			
@@ -121,29 +120,10 @@ class M_user extends M_Model
 		return $data;
  	}
 
- 	public function getall($start = 0){
- 		$this->db->order_by(order, 'asc');
- 		$query = $this->db->get('ta.ms_akun');
-
+ 	public function detail($user_id){
+ 		$query = $this->db->get_where('ms_akun', array('user_id' => $user_id));
 		if ($query->num_rows() > 0){
-			$result['code'] = "212";
-        	        $result['message'] = "";
-                        $row = $query->result_array();
-                        $result['data'] = $row;
-                                   
-                }
-                else{
-        	        $result['code'] = "515";
-        	        $result['message'] = "User tidak ditemukan";
-        	        $result['data'] = null;	
-                }
-                return $result;
- 	}	
-
- 	public function detail($idakun){
- 		$query = $this->db->get_where('ta.ms_akun', array('idakun' => $idakun));
-		if ($query->num_rows() > 0){
-			$result['code'] = "212";
+			$result['code'] = "200";
         	        $result['message'] = "Daftar User";
                         $row = $query->result_array();
                         unset($row[0]['password']);
@@ -151,21 +131,21 @@ class M_user extends M_Model
                                    
                 }
                 else{
-        	        $result['code'] = "515";
+        	        $result['code'] = "402";
         	        $result['message'] = "User tidak ditemukan";
         	        $result['data'] = null;	
                 }
                 return $result;
  	}	
 
-    public function delete($idakun)
+    public function delete($user_id)
 	{
-		$result = $this->db->get_where('ta.ms_akun', array('idakun' => $idakun));
+		$result = $this->db->get_where('ms_akun', array('user_id' => $user_id));
 		if($result->num_rows() > 0)
 		{
-			$this->db->delete('ta.ms_akun', array('idakun' => $idakun));
+			$this->db->delete('public.ms_akun', array('user_id' => $user_id));
 			$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => "Data Berhasil Dihapus",
 				'data' => null
 				);
@@ -173,7 +153,7 @@ class M_user extends M_Model
 		else
 		{
 			$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => "Data Gagal Dihapus. Data Tidak Ditemukan atau Masih Dijadikan Referensi",
 				'data' => null
 				);
@@ -199,12 +179,12 @@ class M_user extends M_Model
 	        $data['file']		= $up_data['file_name'];
 	    }
 
-		$this->db->where('idakun', $data['idakun']);
-		$result = $this->db->update('ta.ms_akun', $data);
+		$this->db->where('user_id', $data['user_id']);
+		$result = $this->db->update('public.ms_akun', $data);
 		if($result) 
 		{
     		$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => "Akun Berhasil Diperbarui ",
 				'data' => $data
 				); 
@@ -213,7 +193,7 @@ class M_user extends M_Model
     	else
     	{
     		$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => "Akun Gagal Diperbarui",
 				'data' => null
 				); 
@@ -226,19 +206,19 @@ class M_user extends M_Model
 	public function updatePassword($data)
 	{
 		$this->db->select('password');
-		$passwordLama = $this->db->get_where('ta.ms_akun', array('idakun' => $data['idakun']))->row();
+		$passwordLama = $this->db->get_where('public.ms_akun', array('user_id' => $data['user_id']))->row();
 		$passwordLama = $passwordLama->password;
 
 		$password = md5($data['password']);
 		$password1 = md5($data['password1']);
 		$password2 = md5($data['password2']);
 
-		if($password == $passwordLama && $password1 == $password2 && !empty($data['idakun'])) 
+		if($password == $passwordLama && $password1 == $password2 && !empty($data['user_id'])) 
 		{
-			$this->db->where('idakun', $data['idakun']);
-			$this->db->update('ta.ms_akun', array('password' => $password1));
+			$this->db->where('user_id', $data['user_id']);
+			$this->db->update('public.ms_akun', array('password' => $password1));
     		$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => "Password Berhasil Diperbarui",
 				'data' => $data
 				); 
@@ -246,7 +226,7 @@ class M_user extends M_Model
     	else
     	{
     		$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => "Password Gagal Diperbarui",
 				'data' => null
 				); 

@@ -8,40 +8,33 @@ class User extends C_controller
     {
         parent::__construct();
         define('model', 'm_user');
-        define('key', 'idakun');
+        define('key', 'user_id');
     }
 
     public function data($data)
     {
         $this->load->model('m_combo');
-        $aktif = $this->m_combo->aktif();
-        $jeniskelamin = $this->m_combo->jeniskelamin();
-        $jabatan = $this->m_combo->jabatan();
+        $status = $this->m_combo->aktif();
 
-        $a_data['input'][] = array('key' => 'idakun', 'label' => 'Id Akun', 'type' => 'T', 'hidden' => true, 'readonly' => true);
+        $a_data['input'][] = array('key' => 'user_id', 'label' => 'Id Akun', 'type' => 'T', 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'nama', 'label' => 'Nama', 'type' => 'T', 'hidden' => false, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'tgllahir', 'label' => 'Tgl Lahir','type' => 'D', 'hidden' => true, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'alamat', 'label' => 'Alamat', 'type' => 'T', 'hidden' => false, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'jeniskelamin', 'label' => 'Jenis Kelamin', 'type' => 'S', 'hidden' => true, 'option' => $jeniskelamin, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'nohp', 'label' => 'No. HP', 'type' => 'N', 'hidden' => false, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'jabatan', 'label' => 'Jabatan', 'type' => 'S', 'option' => $jabatan, 'hidden' => false, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'status', 'label' => 'Status', 'type' => 'S','hidden' => false, 'option' => $aktif, 'readonly' => false);
-        //$a_data['input'][] = array('key' => 'tingkat', 'label' => 'Tingkat', 'type' => 'T','hidden' => false, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'noidentitas', 'label' => 'Identitas', 'type' => 'T','hidden' => true, 'readonly' => false);
-        $a_data['input'][] = array('key' => 'username', 'label' => 'Username', 'type' => 'T','hidden' => true, 'readonly' => true);
-        $a_data['input'][] = array('key' => 'file', 'label' => 'Foto', 'type' => 'F','hidden' => true, 'readonly' => false);
+        $a_data['input'][] = array('key' => 'username', 'label' => 'User Name','type' => 'T', 'hidden' => false, 'readonly' => true);
+        $a_data['input'][] = array('key' => 'status', 'label' => 'Status', 'type' => 'S','hidden' => false, 'option' => $status, 'readonly' => false);
+        // $a_data['input'][] = array('key' => 'file', 'label' => 'Foto', 'type' => 'F','hidden' => true, 'readonly' => false);
 
         $a_data['script'] = 'user';
         $a_data['label'] = 'Daftar Akun';
-        $a_data['p_key'] = 'idakun';
+        $a_data['p_key'] = 'user_id';
 
         //variabel request
-        $this->load->model('m_auth');
-        $a_auth = $this->m_auth->role();
+        // $this->load->model('m_auth');
+        // $a_auth = $this->m_auth->role();
 
-        $a_data['c_insert'] = $a_auth['c_insert'];
-        $a_data['c_edit'] = $a_auth['c_edit'];
-        $a_data['c_delete'] = $a_auth['c_delete'];
+        // $a_data['c_insert'] = $a_auth['c_insert'];
+        // $a_data['c_edit'] = $a_auth['c_edit'];
+        // $a_data['c_delete'] = $a_auth['c_delete'];
+
+        $a_data['c_insert'] = $a_data['c_edit'] = true;
         
         return array_merge($data, $a_data);
     }
@@ -53,7 +46,7 @@ class User extends C_controller
         $this->load->model('m_user');
 		$a_data = $this->m_user->login($username, $password);
 
-        if($a_data['code'] == '212'){
+        if($a_data['code'] == '200'){
             $this->session->set_userdata('is_logged_in', $username);
 
             //session
@@ -94,7 +87,7 @@ class User extends C_controller
     public function getall($data='')
     {
         $this->is_logged();
-        $this->db->where('idakun<>', 0);
+        $this->db->where('user_id<>', 0);
         $this->load->model('m_user');
 		$a_data = $this->m_user->getall();
         $a_data = $this->data($a_data);
@@ -127,10 +120,10 @@ class User extends C_controller
         $this->load->view('footer');
     }
 
-    public function detail($idakun)
+    public function detail($user_id)
     {
         $this->load->model('m_user');
-        $a_data = $this->m_user->detail($idakun);
+        $a_data = $this->m_user->detail($user_id);
         echo json_encode($a_data);
         //$a_data = $this->data($a_data);
     }
@@ -138,7 +131,7 @@ class User extends C_controller
     public function changePassword()
     {
         $this->is_logged();
-        $data['idakun'] = $this->session->userdata('idakun');
+        $data['user_id'] = $this->session->userdata('user_id');
         $pass = $this->session->userdata('password');
         $pass0 = md5($this->input->post('password'));
         $pass1 = md5($this->input->post('password1'));

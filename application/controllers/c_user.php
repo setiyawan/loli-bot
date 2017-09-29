@@ -40,7 +40,7 @@ class C_user extends CI_Controller
         $this->session->set_userdata('is_logged_in', false);
     }
 
-    public function detail($idakun)
+    public function detail($idakun=0)
     {
         $this->load->model('m_user');
         $a_data = $this->m_user->detail($idakun);

@@ -7,7 +7,8 @@ class M_model extends CI_Model
         parent::__construct();
     }
 
-    public function nextval() {
+    public function nextval() 
+    {
     	$this->db->select_max(key);
     	$query = $this->db->get(table)->result_array();
     	$data = ($query[0][key] + 1);
@@ -22,10 +23,11 @@ class M_model extends CI_Model
     
 	public function add($data)
  	{
+ 		print_r($data);
  		$result = $this->db->get_where(table, array(key => $data[key]));
 		if ($result->num_rows() > 0){
 			$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => header . " Sudah Ditambahkan Sebelumnya",
 				'data' => null
 				);
@@ -33,7 +35,7 @@ class M_model extends CI_Model
 		else{
 			$this->db->insert(table, $data); 
 			$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => header . " Berhasil ditambahkan",
 				'data' => $data
 				);			
@@ -48,7 +50,7 @@ class M_model extends CI_Model
 		if($result) 
 		{
     		$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => header . " Berhasil Diperbarui",
 				'data' => $data
 				); 
@@ -56,7 +58,7 @@ class M_model extends CI_Model
     	else
     	{
     		$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => header . " Gagal Diperbarui",
 				'data' => null
 				); 
@@ -64,17 +66,14 @@ class M_model extends CI_Model
     	return $data;
  	}
 
- 	public function getall($start = 0){
- 		$jabatan = $this->session->userdata('jabatan');
-        $idakun = $this->session->userdata('idakun');
-        if($jabatan == 'validator' || $jabatan == 'surveyor') $this->db->where('idakun', $idakun);
-        
+ 	public function getall($start = 0)
+ 	{        
  	 	$this->db->order_by(order, 'asc');
  		$result = $this->db->get(table, 1000, $start);
  		if($result->num_rows() > 0) 
 		{
     		$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => "Daftar " . header,
 				'data' => $result->result_array()
 				); 
@@ -82,7 +81,7 @@ class M_model extends CI_Model
     	else
     	{
     		$data = array(
-				'code' => "515",
+				'code' => "404",
 				'message' => header . " Tidak Ditemukan",
 				'data' => null
 				); 
@@ -90,16 +89,17 @@ class M_model extends CI_Model
     	return $data;
  	}
 
- 	public function detail($id){
+ 	public function detail($id)
+ 	{
  		$query = $this->db->get_where(table, array(key => $id));
 		if ($query->num_rows() > 0){
-			$result['code'] = "212";
+			$result['code'] = "200";
         	        $result['message'] = "Detail " . header;
                     $row = $query->result_array();
-                    $result['data'] = $row;
+                    $result['data'] = $row[0];
                 }
                 else{
-        	        $result['code'] = "515";
+        	        $result['code'] = "404";
         	        $result['message'] = header . " Tidak Ditemukan";
         	        $result['data'] = null;	
                 }
@@ -113,7 +113,7 @@ class M_model extends CI_Model
 		{
 			$this->db->delete(table, array(key => $id));
 			$data = array(
-				'code' => "212",
+				'code' => "200",
 				'message' => header . " Berhasil Dihapus",
 				'data' => null
 				);
@@ -121,7 +121,7 @@ class M_model extends CI_Model
 		else
 		{
 			$data = array(
-				'code' => "515",
+				'code' => "403",
 				'message' => header . " Gagal Dihapus",
 				'data' => null
 				);
@@ -131,27 +131,29 @@ class M_model extends CI_Model
 
 	public function member($id){
  		$query = $this->db->get_where(table, array(parentkey => $id));
-		if ($query->num_rows() > 0){
-			$result['code'] = "212";
-        	        $result['message'] = "Detail " . header;
-                        $row = $query->result_array();
-                        $result['data'] = $row;
-                                   
-                }
-                else{
-        	        $result['code'] = "515";
-        	        $result['message'] = header . " Tidak Ditemukan";
-        	        $result['data'] = null;	
-                }
-                return $result;
+		if ($query->num_rows() > 0)
+		{
+			$result['code'] = "200";
+	        $result['message'] = "Detail " . header;
+            $row = $query->result_array();
+            $result['data'] = $row;
+                           
+        }
+        else {
+	        $result['code'] = "404";
+	        $result['message'] = header . " Tidak Ditemukan";
+	        $result['data'] = null;	
+        }
+        return $result;
  	}	
 
  	public function reduce($data){
  		$tmp = array();
 
  		$table = explode(".", table);
+ 		if (sizeof($table) > 1) $table[0] = $table[1];
  		$this->db->select('column_name');
- 		$query = $this->db->get_where('information_schema.columns', array('table_name'=> $table[1]));
+ 		$query = $this->db->get_where('information_schema.columns', array('table_name'=> $table[0]));
  		foreach($query->result_array() as $key) {
  			$tmp[$key['column_name']] = true;
  		}
