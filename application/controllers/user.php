@@ -14,12 +14,12 @@ class User extends C_controller
     public function data($data)
     {
         $this->load->model('m_combo');
-        $status = $this->m_combo->aktif();
-
+        $aktif = $this->m_combo->aktif();
+        
         $a_data['input'][] = array('key' => 'user_id', 'label' => 'Id Akun', 'type' => 'T', 'hidden' => true, 'readonly' => true);
         $a_data['input'][] = array('key' => 'nama', 'label' => 'Nama', 'type' => 'T', 'hidden' => false, 'readonly' => false);
         $a_data['input'][] = array('key' => 'username', 'label' => 'User Name','type' => 'T', 'hidden' => false, 'readonly' => true);
-        $a_data['input'][] = array('key' => 'status', 'label' => 'Status', 'type' => 'S','hidden' => false, 'option' => $status, 'readonly' => false);
+        $a_data['input'][] = array('key' => 'status', 'label' => 'Status', 'type' => 'S','hidden' => false, 'option' => $aktif, 'readonly' => false);
         // $a_data['input'][] = array('key' => 'file', 'label' => 'Foto', 'type' => 'F','hidden' => true, 'readonly' => false);
 
         $a_data['script'] = 'user';
