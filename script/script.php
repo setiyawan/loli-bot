@@ -1,13 +1,12 @@
 <script>
-	var url = "http://localhost/loli-bot/index.php";
+    var curr_url = window.location.href;
+    var main_url = curr_url.split("/loli-bot");
+	var url = main_url[0] + "/loli-bot/index.php";
 
 	$(document).ready(function() {
         $('#dataTables-example').DataTable({
                 responsive: true
         });
-
-        $('#i_idprovinsi').trigger('change');
-        $('#i_iddesa').trigger('change');
     });
     
 	$(function () {
